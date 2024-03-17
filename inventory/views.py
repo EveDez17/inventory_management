@@ -1,63 +1,42 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, View
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UserRegisterForm, InventoryForm
-from .models import Inventory, SKU
-from smart_inventory.settings import LOW_QUANTITY
 from django.contrib import messages
 from django.contrib.auth.views import LogoutView
-from django.urls import reverse_lazy
+from .forms import UserRegisterForm, CategoryForm
+from .models import Inventory, Category  # Assuming you have a Category model
+from django.conf import settings  # Import Django settings
+from .models import SKU, Category
+from django.db.models import Q
+from django.core.paginator import Paginator
 
-from django.views.generic import TemplateView
-
+# Index view, showing the homepage
 class Index(TemplateView):
     template_name = 'inventory/index.html'
-    
-LOW_QUANTITY = 10  # Example threshold for low inventory
 
-class sku_dashboard(LoginRequiredMixin, View):
-    def get(self, request):
-        items = Inventory.objects.filter(user=request.user).order_by('inventory_id')
 
-        low_inventory = items.filter(quantity__lte=LOW_QUANTITY)
 
-        if low_inventory.exists():
-            item_count = low_inventory.count()
-            messages.error(request, f'{item_count} {"items" if item_count > 1 else "item"} {"have" if item_count > 1 else "has"} low inventory')
-
-        low_inventory_ids = low_inventory.values_list('inventory_id', flat=True)
-
-        return render(request, 'inventory/sku_dashboard.html', {'items': items, 'low_inventory_ids': low_inventory_ids})
-
-    
+# Sign-up view, handling both GET and POST requests for user registration
 class SignUpView(View):
-	def get(self, request):
-		form = UserRegisterForm()
-		return render(request, 'inventory/signup.html', {'form': form})
+    def get(self, request):
+        form = UserRegisterForm()
+        return render(request, 'inventory/signup.html', {'form': form})
 
-	def post(self, request):
-		form = UserRegisterForm(request.POST)
+    def post(self, request):
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(request, username=username, password=password)
+            login(request, user)
+            return redirect('index')
+        return render(request, 'inventory/signup.html', {'form': form})
 
-		if form.is_valid():
-			form.save()
-			user = authenticate(
-				username=form.cleaned_data['username'],
-				password=form.cleaned_data['password1']
-			)
-
-			login(request, user)
-			return redirect('index')
-
-		return render(request, 'inventory/signup.html', {'form': form})
-
-
+# Custom logout view, utilizing Django's built-in LogoutView
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('index')  # Redirect to index page after logout
-
-    def get(self, request, *args, **kwargs):
-        """Handle logout by a GET request."""
-        return self.post(request, *args, **kwargs)
 
 

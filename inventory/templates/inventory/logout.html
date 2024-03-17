@@ -1,19 +1,14 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-12 col-md-8 col-lg-6 mx-auto">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">You Have Been Logged Out</h2>
-                    <p class="card-text">Thank you for visiting. You have successfully logged out of your account.</p>
-                    <div class="mt-4">
-                        <a href="{% url 'login' %}" class="btn btn-primary">Log In Again</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+	<div class="row">
+		<div class="col-11 col-md-4 mx-auto mt-5">
+			<h2>You Have Been Logged Out</h2>
+			<div class="border-top pt-3">
+				<small class="text-muted">
+					<a href="{% url 'login' %}">Log In Again</a>
+				</small>
+			</div>'
+		</div>
+	</div>
 {% endblock content %}
