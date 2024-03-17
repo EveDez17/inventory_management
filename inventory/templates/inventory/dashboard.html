@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container mt-3">
-    <h1>Inventory Dashboard</h1>
+    <h1 style="text-align: center;">INVENTORY DASHBOARD</h1>
     <div class="row">
         <div class="col-md-4">
             <div class="card text-white bg-info mb-3">
@@ -24,6 +24,17 @@
         </div>
         <!-- Add more cards or widgets as necessary -->
     </div>
+    <!-- Search Form -->
+    <form method="get" action="" id="searchForm">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search SKU" id="skuSearch">
+            <input type="hidden" id="hiddenSearchQuery" name="search_query">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+    
     <div class="row">
         <div class="col">
             <h2>Inventory List</h2>

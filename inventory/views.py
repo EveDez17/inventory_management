@@ -12,6 +12,8 @@ from .forms import UserRegisterForm
 
 from .models import Inventory, SKU, Supplier
 
+from django.http import JsonResponse
+
 # Index view, showing the homepage
 class Index(TemplateView):
     template_name = 'inventory/index.html'
@@ -21,11 +23,28 @@ class InventoryDashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['inventory_list'] = Inventory.objects.all()
+        
+        # Get search query from request
+        search_query = self.request.GET.get('search_query', '')
+
+        # Filter inventory_list based on the search query
+        if search_query:
+            context['inventory_list'] = Inventory.objects.filter(
+                sku__name__icontains=search_query
+            )
+        else:
+            context['inventory_list'] = Inventory.objects.all()
+
         context['sku_count'] = SKU.active_objects.count()
         context['supplier_count'] = Supplier.objects.count()
-        # Add more context data as needed for your dashboard
+        context['search_query'] = search_query  # Pass search_query to the template to reuse it in the search form
+        
         return context
+    
+def search_skus(request):
+    query = request.GET.get('query', '')
+    skus = SKU.objects.filter(name__icontains=query).values('name')[:5]  # Limit results to 5 for example
+    return JsonResponse(list(skus), safe=False)
 
 
 
