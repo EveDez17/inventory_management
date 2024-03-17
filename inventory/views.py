@@ -1,20 +1,31 @@
 from django.shortcuts import render, redirect
+
 from django.urls import reverse_lazy
+
 from django.views.generic import TemplateView, View
+
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
+
 from django.contrib.auth.views import LogoutView
-from .forms import UserRegisterForm, CategoryForm
-from .models import Inventory, Category  # Assuming you have a Category model
-from django.conf import settings  # Import Django settings
-from .models import SKU, Category
-from django.db.models import Q
-from django.core.paginator import Paginator
+
+from .forms import UserRegisterForm
+
+from .models import Inventory, SKU, Supplier
 
 # Index view, showing the homepage
 class Index(TemplateView):
     template_name = 'inventory/index.html'
+    
+class InventoryDashboardView(TemplateView):
+    template_name = 'inventory/dashboard.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['inventory_list'] = Inventory.objects.all()
+        context['sku_count'] = SKU.active_objects.count()
+        context['supplier_count'] = Supplier.objects.count()
+        # Add more context data as needed for your dashboard
+        return context
 
 
 

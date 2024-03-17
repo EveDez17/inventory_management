@@ -1,0 +1,53 @@
+<!-- inventory/dashboard.html -->
+
+{% extends "inventory/base.html" %}
+
+{% block content %}
+<div class="container mt-3">
+    <h1>Inventory Dashboard</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Total SKUs</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ sku_count }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Suppliers</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ supplier_count }}</h5>
+                </div>
+            </div>
+        </div>
+        <!-- Add more cards or widgets as necessary -->
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2>Inventory List</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Quantity</th>
+                        <th>User</th>
+                        <th>Date Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inventory in inventory_list %}
+                    <tr>
+                        <td>{{ inventory.sku.name }}</td>
+                        <td>{{ inventory.quantity }}</td>
+                        <td>{{ inventory.user.username }}</td>
+                        <td>{{ inventory.date_created|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
