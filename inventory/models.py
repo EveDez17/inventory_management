@@ -53,7 +53,8 @@ class SKU(models.Model):
     shelf_life_end = models.DateField(null=True, blank=True)
     is_deleted = models.BooleanField(default=False)  # Flag for soft deletion
     deleted_at = models.DateTimeField(null=True, blank=True)  # Timestamp of deletion
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='skus')  # Added ForeignKey to Supplier
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='skus')
+
     
     # Default and custom managers
     objects = models.Manager()
@@ -94,13 +95,14 @@ class Inventory(models.Model):
 
 # Category model for categorizing SKUs
 class Category(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
 
     class Meta:
         verbose_name_plural = 'categories'
 
     def __str__(self):
         return self.name
+
     
 
 

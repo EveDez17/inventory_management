@@ -1,0 +1,17 @@
+[
+    {
+      "model": "inventory.category",
+      "pk": 1,
+      "fields": {
+        "name": "Ambient Foods"
+      }
+    },
+    {
+      "model": "inventory.category",
+      "pk": 2,
+      "fields": {
+        "name": "Chilled Foods"
+      }
+    }
+  ]
+  

@@ -6,10 +6,43 @@ from django.contrib.auth.forms import UserCreationForm
 
 from .models import  SKU, Inventory, Category, Address, Supplier
 
+from crispy_forms.helper import FormHelper
+
+from crispy_forms.layout import Submit, Layout, Field
+
+class SKuForm(forms.ModelForm):
+    class Meta:
+        model = SKU
+        fields = ['name', 'description', 'category', 'weight', 'dimensions', 'bbe', 'batch', 'manufacturing_date', 'shelf_life_end', 'supplier']
+        
+
+class AddSKUForm(forms.ModelForm):
+    class Meta:
+        model = SKU
+        fields = ['name', 'description', 'category', 'weight', 'dimensions', 'bbe', 'batch', 'manufacturing_date', 'shelf_life_end', 'supplier']
+        
 class SKUForm(forms.ModelForm):
     class Meta:
         model = SKU
-        fields = '__all__'  # Include all fields from the SKU model
+        fields = '__all__'
+        
+    def __init__(self, *args, **kwargs):
+        super(SKUForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('name', css_class='my-class'),
+            'description',
+            'category',
+            'weight', 
+            'dimensions', 
+            'bbe',  # Best Before End Date, I assume?
+            'batch', 
+            'manufacturing_date', 
+            'shelf_life_end', 
+            'supplier',
+            Submit('submit', 'Submit', css_class='btn-success')
+        )
+
 
 class InventoryForm(forms.ModelForm):
     class Meta:

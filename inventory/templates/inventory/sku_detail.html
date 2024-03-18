@@ -1,0 +1,35 @@
+<!-- inventory/sku_detail.html -->
+
+{% extends "inventory/base.html" %}
+
+{% block content %}
+<div class="container mt-3">
+    <h1 style="text-align: center;">SKU Details</h1>
+    <div class="row">
+        <div class="col">
+            <h2>{{ sku.name }}</h2>
+            <p><strong>Description:</strong> {{ sku.description }}</p>
+            <p><strong>Category:</strong> {{ sku.category }}</p>
+            <p><strong>Weight:</strong> {{ sku.weight }}</p>
+            <p><strong>Dimensions:</strong> {{ sku.dimensions }}</p>
+            <p><strong>Best Before End:</strong> {{ sku.bbe }}</p>
+            <p><strong>Batch:</strong> {{ sku.batch }}</p>
+            <p><strong>Manufacturing Date:</strong> {{ sku.manufacturing_date }}</p>
+            <p><strong>Shelf Life End:</strong> {{ sku.shelf_life_end }}</p>
+            
+            {% if sku.supplier %}
+                <p><strong>Supplier:</strong> {{ sku.supplier.supplier_name }}</p>
+                <p><strong>Contact:</strong> {{ sku.supplier.supplier_contact }}</p>
+                <p><strong>Email:</strong> {{ sku.supplier.supplier_email }}</p>
+                <p><strong>Contact Number:</strong> {{ sku.supplier.supplier_contact_number }}</p>
+                <p><strong>Address:</strong> {{ sku.supplier.address }}</p>
+            {% else %}
+                <p><strong>Supplier:</strong> N/A</p>
+            {% endif %}
+            
+            <a href="{% url 'inventory_dashboard' %}" class="btn btn-secondary">Return to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
