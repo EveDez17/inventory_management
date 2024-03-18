@@ -49,17 +49,18 @@
             </div>
         </div>
         <!-- End of "Add SKU" card widget -->
-        <!-- Add the "Add SKU" card widget here -->
+        <!-- Begin of Bulk Delete SKU card widget -->
         <div class="col-md-4">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-header">Delete SKU</div>
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Delete SKUs</div>
                 <div class="card-body">
-                    <p>Delete SKU from inventory.</p>
-                    <a href="{% url 'add_sku' %}" class="btn btn-primary">Add SKU</a>
+                    <p>Select multiple SKUs to delete from the inventory.</p>
+                    <a href="{% url 'delete_sku_list' %}" class="btn btn-warning">Delete SKUs</a>
                 </div>
             </div>
         </div>
-        <!-- End of "Add SKU" card widget -->
+        <!-- End of Bulk Delete SKU card widget -->
+
     </div>
     <div class="row">
         <div class="col">

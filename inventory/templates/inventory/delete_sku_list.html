@@ -1,0 +1,22 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Select SKUs to Delete</h2>
+    <form method="post" action="{% url 'perform_sku_deletion' %}">
+        {% csrf_token %}
+        <div class="list-group">
+            {% for sku in skus %}
+            <label class="list-group-item">
+                <!-- Use sku.id if it's the primary key, adjust if sku_id is correct -->
+                <input type="checkbox" name="sku_ids" value="{{ sku.id }}"> {{ sku.name }}
+            </label>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Are you sure you want to delete the selected SKUs?');">Delete Selected</button>
+    </form>
+</div>
+{% endblock %}
+
+
+

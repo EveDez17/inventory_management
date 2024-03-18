@@ -16,9 +16,8 @@ from .models import Inventory, SKU, Supplier
 
 from django.http import JsonResponse
 
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 
-from django.http import HttpResponse
 
 # Index view, showing the homepage
 class Index(TemplateView):
@@ -92,6 +91,38 @@ class AddSKUView(CreateView):
 def sku_added_success_view(request):
     return render(request, 'inventory/sku_success.html')
 
+# Delete a single SKU
+class DeleteSKUView(DeleteView):
+    model = SKU
+    template_name = 'inventory/delete_sku.html'
+    success_url = reverse_lazy('dashboard')  # Assuming 'dashboard' is your dashboard view's URL name
+
+    def delete(self, request, *args, **kwargs):
+        response = super().delete(request, *args, **kwargs)  # Perform the deletion
+        messages.success(self.request, "SKU deleted successfully.")
+        return response
+
+# View for listing SKUs to delete (bulk deletion)
+def sku_delete_list_view(request):
+    skus = SKU.objects.all()
+    return render(request, 'inventory/delete_sku_list.html', {'skus': skus})
+
+# Perform the actual deletion of selected SKUs
+def perform_sku_deletion(request):
+    if request.method == 'POST':
+        sku_ids = list(filter(None, request.POST.getlist('sku_ids')))
+        if sku_ids:
+            skus_to_delete = SKU.objects.filter(sku_id__in=sku_ids)
+            for sku in skus_to_delete:
+                sku.delete()  # Calls the overridden delete method for soft deletion
+            messages.success(request, f"Selected SKUs have been soft deleted successfully.")
+        else:
+            messages.error(request, "No SKUs selected for deletion.")
+    else:
+        messages.error(request, "Invalid request method.")
+    return redirect('inventory_dashboard')
+
+
 # Sign-up view, handling both GET and POST requests for user registration
 class SignUpView(View):
     def get(self, request):
@@ -108,9 +139,12 @@ class SignUpView(View):
             login(request, user)
             return redirect('index')
         return render(request, 'inventory/signup.html', {'form': form})
+    
 
 # Custom logout view, utilizing Django's built-in LogoutView
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('index')  # Redirect to index page after logout
+    
+
 
 
