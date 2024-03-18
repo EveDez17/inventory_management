@@ -4,7 +4,23 @@
 
 {% block content %}
 <div class="container mt-3">
+
     <h1 style="text-align: center;">INVENTORY DASHBOARD</h1>
+
+    <div class="my-4"></div>
+       <!-- Search Form -->
+<form method="get" action="{% url 'inventory_search_results' %}" id="searchForm">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search SKU" id="skuSearch" name="search_query" value="{{ search_query }}">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </div>
+</form>
+<!-- End Search Form -->
+
+<div class="my-4"></div>
+
     <div class="row">
         <div class="col-md-4">
             <div class="card text-white bg-info mb-3">
@@ -15,7 +31,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card text-white bg-success mb-3">
+            <div class="card text-white bg-info mb-3">
                 <div class="card-header">Suppliers</div>
                 <div class="card-body">
                     <h5 class="card-title">{{ supplier_count }}</h5>
@@ -24,7 +40,7 @@
         </div>
         <!-- Add the "Add SKU" card widget here -->
         <div class="col-md-4">
-            <div class="card text-white bg-info mb-3">
+            <div class="card text-white bg-success mb-3">
                 <div class="card-header">Add SKU</div>
                 <div class="card-body">
                     <p>Add a new SKU to the inventory.</p>
@@ -35,7 +51,7 @@
         <!-- End of "Add SKU" card widget -->
         <!-- Add the "Add SKU" card widget here -->
         <div class="col-md-4">
-            <div class="card text-white bg-info mb-3">
+            <div class="card text-white bg-success mb-3">
                 <div class="card-header">Delete SKU</div>
                 <div class="card-body">
                     <p>Delete SKU from inventory.</p>
@@ -45,19 +61,6 @@
         </div>
         <!-- End of "Add SKU" card widget -->
     </div>
-    <!-- Search Form -->
-    <!-- inventory/dashboard.html -->
-
-<form method="get" action="{% url 'inventory_search_results' %}" id="searchForm">
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search SKU" id="skuSearch" name="search_query" value="{{ search_query }}">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="submit">Search</button>
-        </div>
-    </div>
-</form>
-
-    
     <div class="row">
         <div class="col">
             <h2>Inventory List</h2>
