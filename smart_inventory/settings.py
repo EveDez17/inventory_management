@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'gatewarehouse.apps.GatewarehouseConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     'inventory.apps.InventoryConfig',

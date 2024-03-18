@@ -16,7 +16,9 @@ from .models import Inventory, SKU, Supplier
 
 from django.http import JsonResponse
 
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from .models import SKU
 
 
 # Index view, showing the homepage
@@ -121,6 +123,18 @@ def perform_sku_deletion(request):
     else:
         messages.error(request, "Invalid request method.")
     return redirect('inventory_dashboard')
+
+# Edit Sku
+class EditSKUView(UpdateView):
+    model = SKU
+    form_class = SKUForm  # The form that matches your SKU model
+    template_name = 'inventory/edit_sku.html'  # Template containing the form
+    success_url = reverse_lazy('inventory_dashboard')  # Where to redirect after successful edit
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # You can add more context if needed
+        return context
 
 
 # Sign-up view, handling both GET and POST requests for user registration
