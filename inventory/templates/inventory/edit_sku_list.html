@@ -1,0 +1,40 @@
+{% extends 'inventory/base.html' %}
+
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Select SKU to Edit</h2>
+    <!-- Removed the form tag since we're just linking to another page -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SKU ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Best Before End</th>
+                <th>Is Deleted</th>
+                <th>Supplier Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sku in skus %}
+            <tr>
+                <td>{{ sku.sku_id }}</td>
+                <td>{{ sku.name }}</td>
+                <td>{{ sku.category }}</td>
+                <td>{{ sku.bbe|date:"Y-m-d" }}</td> <!-- Assuming 'bbe' is a date field -->
+                <td>{{ sku.is_deleted|yesno:"Yes,No" }}</td> <!-- Converts boolean to Yes/No -->
+                <td>{{ sku.supplier.name }}</td>
+                <td><a href="{% url 'edit_sku' pk=sku.sku_id %}" class="btn btn-primary">Edit</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No SKUs available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock%}
+

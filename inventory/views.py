@@ -127,14 +127,18 @@ def perform_sku_deletion(request):
 # Edit Sku
 class EditSKUView(UpdateView):
     model = SKU
-    form_class = SKUForm  # The form that matches your SKU model
-    template_name = 'inventory/edit_sku.html'  # Template containing the form
-    success_url = reverse_lazy('inventory_dashboard')  # Where to redirect after successful edit
+    form_class = SKUForm  # Ensure this form class has fields for SKU
+    template_name = 'inventory/edit_sku.html'
+    success_url = reverse_lazy('inventory_dashboard')  # Redirect after saving
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # You can add more context if needed
-        return context
+    
+def sku_list_view(request):
+    skus = SKU.objects.all()  # Make sure this query returns SKUs
+    return render(request, 'inventory/edit_sku_list.html', {'skus': skus})
+
+def get_queryset(self):
+    # Override the default queryset to exclude soft-deleted SKUs
+    return SKU.active_objects.all()
 
 
 # Sign-up view, handling both GET and POST requests for user registration

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import Index, SignUpView, InventoryDashboardView, search_skus, InventorySearchResultsView, SKUDetailView,  AddSKUView, sku_added_success_view, DeleteSKUView, sku_delete_list_view, perform_sku_deletion
+from .views import Index, SignUpView, InventoryDashboardView, search_skus, InventorySearchResultsView, SKUDetailView,  AddSKUView, sku_added_success_view, DeleteSKUView, sku_delete_list_view, perform_sku_deletion, EditSKUView, sku_list_view
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -23,6 +23,11 @@ urlpatterns = [
 
     # Path for performing the bulk deletion
     path('delete-skus/perform/', perform_sku_deletion, name='perform_sku_deletion'),
+    
+    path('skus/', sku_list_view, name='sku_list'),
+   
+    path('sku/edit/<int:pk>/', EditSKUView.as_view(), name='edit_sku'),
+    
     path('search_skus/', search_skus, name='search_skus'),
     
     path('signup/', SignUpView.as_view(), name='signup'),  
