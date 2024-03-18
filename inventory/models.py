@@ -6,6 +6,33 @@ from django.contrib.auth.models import User
 
 from dateutil.relativedelta import relativedelta
 
+class Address(models.Model):
+    street_number = models.CharField(max_length=255)
+    street_name = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    county = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    post_code = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.street_number} {self.street_name}, {self.city}, {self.county}, {self.country}, {self.post_code}"
+    
+
+class Supplier(models.Model):
+    supplier_name = models.CharField(max_length=255)
+    supplier_contact = models.CharField(max_length=255)
+    supplier_email = models.EmailField()
+    supplier_contact_number = models.CharField(max_length=20)
+    address = models.ForeignKey('Address', on_delete=models.CASCADE)
+   
+
+    class Meta:
+        verbose_name_plural = 'suppliers'
+
+    def __str__(self):
+        return self.supplier_name
+
+
 # Custom manager to filter out soft-deleted SKUs
 class ActiveSKUManager(models.Manager):
     def get_queryset(self):
@@ -26,6 +53,7 @@ class SKU(models.Model):
     shelf_life_end = models.DateField(null=True, blank=True)
     is_deleted = models.BooleanField(default=False)  # Flag for soft deletion
     deleted_at = models.DateTimeField(null=True, blank=True)  # Timestamp of deletion
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='skus')  # Added ForeignKey to Supplier
     
     # Default and custom managers
     objects = models.Manager()
@@ -75,30 +103,4 @@ class Category(models.Model):
         return self.name
     
 
-
-class Address(models.Model):
-    street_number = models.CharField(max_length=255)
-    street_name = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    county = models.CharField(max_length=255)
-    country = models.CharField(max_length=255)
-    post_code = models.CharField(max_length=20)
-
-    def __str__(self):
-        return f"{self.street_number} {self.street_name}, {self.city}, {self.county}, {self.country}, {self.post_code}"
-    
-
-class Supplier(models.Model):
-    supplier_name = models.CharField(max_length=255)
-    supplier_contact = models.CharField(max_length=255)
-    supplier_email = models.EmailField()
-    supplier_contact_number = models.CharField(max_length=20)
-    address = models.ForeignKey('Address', on_delete=models.CASCADE)
-    sku = models.CharField(max_length=100, unique=True)  # SKU unique to each supplier
-
-    class Meta:
-        verbose_name_plural = 'suppliers'
-
-    def __str__(self):
-        return f"{self.supplier_name} ({self.sku})"
 
