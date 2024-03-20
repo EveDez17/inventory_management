@@ -2,9 +2,10 @@ from django.db import models
 
 from django.utils import timezone
 
-from django.contrib.auth.models import User
+from django.conf import settings
 
 from dateutil.relativedelta import relativedelta
+
 
 class Address(models.Model):
     street_number = models.CharField(max_length=255)
@@ -16,18 +17,17 @@ class Address(models.Model):
 
     def __str__(self):
         return f"{self.street_number} {self.street_name}, {self.city}, {self.county}, {self.country}, {self.post_code}"
-    
+
 
 class Supplier(models.Model):
     supplier_name = models.CharField(max_length=255)
     supplier_contact = models.CharField(max_length=255)
     supplier_email = models.EmailField()
     supplier_contact_number = models.CharField(max_length=20)
-    address = models.ForeignKey('Address', on_delete=models.CASCADE)
-   
+    address = models.ForeignKey("Address", on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = 'suppliers'
+        verbose_name_plural = "suppliers"
 
     def __str__(self):
         return self.supplier_name
@@ -38,6 +38,7 @@ class ActiveSKUManager(models.Manager):
     def get_queryset(self):
         # Return only instances where is_deleted is False
         return super().get_queryset().filter(is_deleted=False)
+
 
 # SKU model for stock keeping units with soft deletion support
 class SKU(models.Model):
@@ -53,9 +54,10 @@ class SKU(models.Model):
     shelf_life_end = models.DateField(null=True, blank=True)
     is_deleted = models.BooleanField(default=False)  # Flag for soft deletion
     deleted_at = models.DateTimeField(null=True, blank=True)  # Timestamp of deletion
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='skus')
+    supplier = models.ForeignKey(
+        Supplier, on_delete=models.CASCADE, related_name="skus"
+    )
 
-    
     # Default and custom managers
     objects = models.Manager()
     active_objects = ActiveSKUManager()
@@ -81,28 +83,28 @@ class SKU(models.Model):
     def __str__(self):
         return self.name
 
+
 # Inventory model to track SKU quantities and ownership
 class Inventory(models.Model):
     inventory_id = models.AutoField(primary_key=True)
-    sku = models.ForeignKey(SKU, on_delete=models.SET_NULL, null=True, related_name='inventory_entries')
-    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
+    sku = models.ForeignKey(
+        SKU, on_delete=models.SET_NULL, null=True, related_name="inventory_entries"
+    )
+    category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='inventories')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.sku.name} - {self.user.username}"
+
 
 # Category model for categorizing SKUs
 class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)
 
     class Meta:
-        verbose_name_plural = 'categories'
+        verbose_name_plural = "categories"
 
     def __str__(self):
         return self.name
-
-    
-
-
