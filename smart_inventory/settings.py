@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "role_based_login_system",
-    "gatewarehouse",
+    "role_based_login_system.apps.RoleBasedLoginSystemConfig",
+    "gatewarehouse.apps.GatewarehouseConfig",
     "crispy_forms",
     "crispy_bootstrap5",
     "inventory.apps.InventoryConfig",
@@ -60,7 +60,7 @@ ROOT_URLCONF = "smart_inventory.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -126,7 +126,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
-
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type

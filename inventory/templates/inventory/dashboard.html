@@ -1,7 +1,7 @@
 <!-- inventory/dashboard.html -->
 
 {% extends "inventory/base.html" %}
-
+{% load static%}
 {% block content %}
 <div class="container mt-3">
 
@@ -107,4 +107,5 @@
         </div>
     </div>
 </div>
+<script src="{% static 'inventory/js/search.js' %}"></script>
 {% endblock %}
