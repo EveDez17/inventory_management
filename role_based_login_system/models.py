@@ -10,24 +10,14 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        try:
-            user.full_clean()
-        except ValidationError as e:
-            raise ValueError(e.messages)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
-        if not extra_fields.get('is_staff'):
-            raise ValueError('Superuser must have is_staff=True.')
-        if not extra_fields.get('is_superuser'):
-            raise ValueError('Superuser must have is_superuser=True.')
-
         return self.create_user(email, password, **extra_fields)
-
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
@@ -35,7 +25,7 @@ class User(AbstractUser):
     class Role(models.TextChoices):
         DEFAULT_USER = "DEFAULT_USER", 'Default User'
         SECURITY = "SECURITY", 'Security'
-        RECEPTIONIST = "RECEPTIONIST", 'Receptionist'  
+        RECEPTIONIST = "RECEPTIONIST", 'Receptionist'
         WAREHOUSE_OPERATIVE = "WAREHOUSE_OPERATIVE", 'Warehouse Operative'
         WAREHOUSE_ADMIN = "WAREHOUSE_ADMIN", 'Warehouse Admin'
         WAREHOUSE_TEAM_LEADER = "WAREHOUSE_TEAM_LEADER", 'Warehouse Team Leader'
@@ -54,13 +44,6 @@ class User(AbstractUser):
 
     def has_role(self, role):
         return self.role == role
-
-    def save(self, *args, **kwargs):
-        try:
-            self.full_clean()
-        except ValidationError as e:
-            raise ValueError(e.messages)
-        super().save(*args, **kwargs)
         
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -77,34 +60,4 @@ class Employee(models.Model):
         db_table = 'employee'
 
     def __str__(self):
-        # This method attempts to use the full name from the linked user record.
-        return self.user.get_full_name() or self.user.username
-        
-        
-class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError('The Email field must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        try:
-            user.full_clean()
-        except ValidationError as e:
-            raise ValueError(e.messages)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        if not extra_fields.get('is_staff'):
-            raise ValueError('Superuser must have is_staff=True.')
-        if not extra_fields.get('is_superuser'):
-            raise ValueError('Superuser must have is_superuser=True.')
-
-        return self.create_user(email, password, **extra_fields)
-
-
-
+        return f"{self.f_name} {self.s_name}"
