@@ -1,9 +1,7 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView
+# gatewarehouse/views.py
 
-# Index view, showing the homepage
-class Index(TemplateView):
-    template_name = "inventory/index.html"
-    
-class InventoryDashboardView(TemplateView):
-    template_name = "gatewarehouse/access_log_dashboard.html"
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "gatewarehouse/gatehouse_dashboard.html"
