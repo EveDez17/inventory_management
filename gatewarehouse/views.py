@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
-# Create your views here.
+# Index view, showing the homepage
+class Index(TemplateView):
+    template_name = "inventory/index.html"
+    
+class InventoryDashboardView(TemplateView):
+    template_name = "gatewarehouse/access_log_dashboard.html"
