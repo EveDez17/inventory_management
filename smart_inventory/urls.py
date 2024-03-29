@@ -21,8 +21,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('gatewarehouse/', include('gatewarehouse.urls')),
-    path("", include("inventory.urls")),
+     path('gatewarehouse/', include(('gatewarehouse.urls', 'gatewarehouse'), namespace='gatewarehouse')),
+    path('inventory/', include("inventory.urls")),
     path("admin/", admin.site.urls),
     
 ]+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

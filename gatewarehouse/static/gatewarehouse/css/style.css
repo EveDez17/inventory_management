@@ -1,0 +1,55 @@
+/* Apply a background gradient or image */
+body {
+    background: linear-gradient(to right, #6dd5ed, #2193b0); /* This is just an example gradient */
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .welcome-container {
+    text-align: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+  
+  .welcome-container h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-container p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+  }
+  
+  /* Style the button to be more modern */
+  .welcome-button {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: all 0.3s;
+    border: none;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .welcome-button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Add responsiveness to the container */
+  @media (max-width: 768px) {
+    .welcome-container {
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+    .welcome-container h1 {
+      font-size: 2rem;
+    }
+  }
+  

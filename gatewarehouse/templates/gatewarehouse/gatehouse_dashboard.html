@@ -1,11 +1,19 @@
 {% extends 'inventory/base.html' %}
 
+{% block head %}
+{% load static %}
+<!-- FullCalendar CSS from CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.css" rel="stylesheet">
+{% endblock head %}
+
 {% block content %}
-<!-- Your content specific to the dashboard view -->
-<h1>Gatewarehouse Dashboard</h1>
-<!-- More HTML content here -->
+<div class="container mt-3">
+    <h1 style="text-align: center;">Gatewarehouse Dashboard</h1>
+    <div id='calendar' class="my-4"></div>  <!-- FullCalendar will attach here -->
+</div>
 {% endblock content %}
 
 {% block javascript %}
-<!-- If you need to override the base javascript block, do it here -->
+
 {% endblock javascript %}
+

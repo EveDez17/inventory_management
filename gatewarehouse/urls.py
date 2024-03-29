@@ -1,17 +1,13 @@
-# gatewarehouse/urls.py
-
 from django.urls import path
-# Import Index from the inventory app's views, not the current app's views
-from inventory.views import Index
-from .views import DashboardView  # Import DashboardView from the current app
+from .views import GateWarehouseIndexView, DashboardView, VehicleLogView
 
 app_name = 'gatewarehouse'
 
 urlpatterns = [
-    # Use the Index view from the inventory app for the root URL of 'gatewarehouse'
-    path('', Index.as_view(), name='index'),  
-    # The DashboardView for 'dashboard/' URL within 'gatewarehouse'
+    path('', GateWarehouseIndexView.as_view(), name='index'),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
     
+    
+    # ... other URL patterns for gatewarehouse
 ]
 

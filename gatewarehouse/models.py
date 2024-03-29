@@ -4,6 +4,7 @@ from django.conf import settings
 
 from django.utils import timezone
 
+
 class SecurityGate(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, 

@@ -1,0 +1,29 @@
+{% extends 'inventory/base.html' %}  <!-- Extending from 'inventory' app's base template -->
+
+{% block head %}
+
+{% load static %}
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<link href="{% static 'gatewarehouse/css/style.css' %}" rel="stylesheet">
+
+{% endblock head %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-11 col-md-4 mx-auto mt-5 px-3">
+      <h1>Welcome to Gate Warehouse Management</h1>
+      <p>Manage and monitor your warehouse gates efficiently.</p>
+      <a href="{% url 'gatewarehouse:dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+
+
+
+
+
